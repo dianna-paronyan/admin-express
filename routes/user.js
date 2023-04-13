@@ -1,6 +1,6 @@
 const { authenticateToken } = require('../jwt/jwt_authenticate');
 
-function users_routes(app){
+function user_routes(app){
     const user_controller = require('../controllers/users_controller')
     
     app.post('/register', user_controller.register);
@@ -10,4 +10,4 @@ function users_routes(app){
     app.delete('/deleteUser/:id', authenticateToken, user_controller.deleteUser);
 }
 
-module.exports = {users_routes}
+module.exports = {user_routes}

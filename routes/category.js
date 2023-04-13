@@ -1,6 +1,6 @@
 const { authenticateToken } = require('../jwt/jwt_authenticate');
 
-function categories_routes(app){
+function category_routes(app){
     const categories_controller = require('../controllers/category_controller');
     
     app.get('/categories', authenticateToken, categories_controller.allCategories);
@@ -10,5 +10,5 @@ function categories_routes(app){
 }
 
 module.exports = {
-    categories_routes
+    category_routes
 }
