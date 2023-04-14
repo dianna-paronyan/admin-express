@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 
 const { User } = require(".");
 const { generateAccessToken } = require("../jwt/generateToken");
-const { registerValidator } = require("../validation");
+const { registerValidator, loginValidator } = require("../validation");
 require("dotenv").config();
 
 async function register(req, res) {
@@ -41,6 +41,10 @@ async function register(req, res) {
 
 async function login(req, res) {
   const {email, password} = req.body;
+  const {error} = loginValidator(req.body);
+  if(error){
+    return res.status(400).send(error.details[0].message);
+  } 
   const user = await User.findOne({ where: { email } });
   if (!user) {
     return res.status(400).send("Email is not correct");
