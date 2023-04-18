@@ -1,7 +1,11 @@
-const { Product } = require(".");
+const { Product, Category } = require(".");
+
+
+
 
 function allProducts(req,res){
-    Product.findAll().then((prod)=>{
+    Product.findAll({ include: Category}).then((prod)=>{
+        console.log(prod);
         res.json(prod)
     }).catch((err)=>{
         res.status(500).json({error: err.message})

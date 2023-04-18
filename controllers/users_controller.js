@@ -51,8 +51,8 @@ async function login(req, res) {
   }
   const validPassword = await bcrypt.compare(password, user.password);
   if (validPassword) {
-    const token = generateAccessToken(email, user.id);
-    res.send(JSON.stringify({ status: "Logged in", jwt: token }));
+    const token = generateAccessToken(email, user.id,user.role);
+    res.send(JSON.stringify({ status: "Logged in", jwt: token,role: user.role, userName:user.userName}));
   } else {
     return res.status(400).send("Invalid password");
   }
@@ -66,23 +66,4 @@ function allUsers(req,res){
   })
 }
 
-function updateUser(req,res){
-    const {id} = req.params;
-    const {userName, email, password} = req.body;
-    User.update({userName, email, password},{where:{id}}).then((user)=>{
-        res.json({response:'updated'})
-    }).catch((err)=>{
-        res.status(500).json({error: err.message})
-    })
-}
-
-function deleteUser(req,res){
-  const {id} = req.params;
-  User.destroy({where:{id}}).then((user)=>{
-      res.json({response:'deleted'})
-  }).catch((err)=>{
-      res.status(500).json({error: err.message})
-  }) 
-}
-
-module.exports = { register, login, allUsers, updateUser, deleteUser };
+module.exports = { register, login, allUsers };

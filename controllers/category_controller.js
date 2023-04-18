@@ -1,4 +1,6 @@
-const { Category } = require(".");
+const { Category, Product } = require(".");
+
+
 
 
 function allCategories(req,res){
