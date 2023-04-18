@@ -14,11 +14,15 @@ function authenticateToken(req, res, next) {
     if (err) {
       return res.sendStatus(403);
     }else if (user.role === 1) {
+      console.log(user);
       next();
-    }else{
+    }
+    else{
+      console.log(user);
       return res.sendStatus(401);
     }
   });
+
 }
 
 module.exports = {authenticateToken}
