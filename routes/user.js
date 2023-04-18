@@ -6,8 +6,6 @@ function user_routes(app){
     app.post('/register', user_controller.register);
     app.post('/login', user_controller.login);
     app.get('/users', authenticateToken, user_controller.allUsers);
-    app.put('/updateUser/:id', authenticateToken, user_controller.updateUser);
-    app.delete('/deleteUser/:id', authenticateToken, user_controller.deleteUser);
 }
 
 module.exports = {user_routes}
