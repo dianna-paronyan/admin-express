@@ -10,7 +10,8 @@ async function register(req, res) {
 
    const {error} = registerValidator(req.body);
    if(error){
-    return res.status(400).send(error.details[0].message)
+    console.log(error.message,'err');
+    return res.status(400).json({message:error.message})
    }
 
   const salt = await bcrypt.genSalt(10);
@@ -21,7 +22,7 @@ async function register(req, res) {
   if (emailExists) {
     return res
       .status(400)
-      .send("A User account with this email already exists");
+      .json("A User account with this email already exists");
   }
 
   const newUser = {
@@ -43,18 +44,19 @@ async function login(req, res) {
   const {email, password} = req.body;
   const {error} = loginValidator(req.body);
   if(error){
-    return res.status(400).send(error.details[0].message);
+    console.log(error,'err');
+    return res.status(400).json(error.message);
   } 
   const user = await User.findOne({ where: { email } });
   if (!user) {
-    return res.status(400).send("Email is not correct");
+    return res.status(400).json("Email is not correct");
   }
   const validPassword = await bcrypt.compare(password, user.password);
   if (validPassword) {
     const token = generateAccessToken(email, user.id,user.role);
     res.send(JSON.stringify({ status: "Logged in", jwt: token,role: user.role, userName:user.userName}));
   } else {
-    return res.status(400).send("Invalid password");
+    return res.status(400).json("Invalid password");
   }
 }
 
