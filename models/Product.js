@@ -9,9 +9,5 @@ module.exports = (Sequelize, DataTypes) => {
       quantity: DataTypes.INTEGER
     });
 
-    // Product.associate = (models) => {
-    //   Product.belongsTo(models.Category,{foreignKey:'categoryId'});
-    // };
-  
     return Product;
   };

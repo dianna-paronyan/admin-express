@@ -6,17 +6,15 @@ const { registerValidator, loginValidator } = require("../validation");
 require("dotenv").config();
 
 async function register(req, res) {
-    const {userName, email, password } = req.body;
+  const { userName, email, password } = req.body;
 
-   const {error} = registerValidator(req.body);
-   if(error){
-    console.log(error.message,'err');
-    return res.status(400).json({message:error.message})
-   }
+  const { error } = registerValidator(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.message });
+  }
 
   const salt = await bcrypt.genSalt(10);
   const hashed_password = await bcrypt.hash(password, salt);
-
 
   const emailExists = await User.findOne({ where: { email } });
   if (emailExists) {
@@ -41,31 +39,39 @@ async function register(req, res) {
 }
 
 async function login(req, res) {
-  const {email, password} = req.body;
-  const {error} = loginValidator(req.body);
-  if(error){
-    console.log(error,'err');
+  const { email, password } = req.body;
+  const { error } = loginValidator(req.body);
+  if (error) {
     return res.status(400).json(error.message);
-  } 
+  }
   const user = await User.findOne({ where: { email } });
   if (!user) {
     return res.status(400).json("Email is not correct");
   }
   const validPassword = await bcrypt.compare(password, user.password);
   if (validPassword) {
-    const token = generateAccessToken(email, user.id,user.role);
-    res.send(JSON.stringify({ status: "Logged in", jwt: token,role: user.role, userName:user.userName}));
+    const token = generateAccessToken(email, user.id, user.role);
+    res.send(
+      JSON.stringify({
+        status: "Logged in",
+        jwt: token,
+        role: user.role,
+        userName: user.userName,
+      })
+    );
   } else {
     return res.status(400).json("Invalid password");
   }
 }
 
-function allUsers(req,res){
-  User.findAll().then((user)=>{
-      res.json(user)
-  }).catch((err)=>{
-      res.status(500).json({error: err.message})
-  })
+function allUsers(req, res) {
+  User.findAll()
+    .then((user) => {
+      res.json(user);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
 }
 
 module.exports = { register, login, allUsers };
