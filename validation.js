@@ -20,7 +20,7 @@ const registerValidator = (data) => {
         "any.required": `email is a required field`,
       }),
     password: Joi.string()
-      .min(6)
+      .min(8)
       .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
       .required()
       .messages({
@@ -44,7 +44,7 @@ const loginValidator = (data) => {
       "string.empty": `email cannot be an empty field`,
       "any.required": `email is a required field`,
     }),
-    password: Joi.string().min(6).required().messages({
+    password: Joi.string().min(8).required().messages({
       "string.base": `password should be a type of 'text'`,
       "string.min": `password should have a minimum 6 characters`,
       "string.empty": `password cannot be an empty field`,
